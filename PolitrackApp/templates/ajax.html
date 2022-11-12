@@ -1,0 +1,84 @@
+
+<script>
+<!--send statement-->
+$("input").keyup(function()
+{
+  output="";
+  let stm = $("#stm").val();
+  console.log(stm);
+  let csr = $("input[name=csrfmiddlewaretoken]").val();
+  mydata = {stm : stm, csrfmiddlewaretoken: csr};
+  $.ajax(
+  {
+    url: "{% url 'statement' %}",
+    method: "POST",
+    data: mydata,
+    dataType: "json",
+    success: function(data)
+    {
+        x = data.st;
+        if (data.st !="")
+        {
+
+            for (let i = 0; i < x.length; i++)
+            {
+                console.log(x[i]);
+                output += " <input type='button' class='btn btn-primary mt-1 mr-1 tg' value=" +x[i] + "> ";
+            }
+            $("#tagdiv").html(output);
+        }
+        else
+        {
+            data.st = "";
+            $("#st").html(data.st);
+        }
+
+    }
+
+  })
+});
+
+
+<!--Click on Tags-->
+$("#tagdiv").on("click", ".tg", function()
+{
+  console.log("click Tag");
+  let tag = $(this).val();
+  console.log(tag);
+
+  let stm = $("#stm").val();
+  stm = stm + ", " + tag;
+  console.log(stm);
+  $("#stm").val(stm);
+  $(this).closest("input").fadeOut();
+});
+
+
+
+<!--Save Statement-->
+
+$("#sub").click(function()
+{
+    console.log("click Sub");
+    let stm = $("#stm").val();
+    let csr = $("input[name=csrfmiddlewaretoken]").val();
+    mydata = {stm : stm, csrfmiddlewaretoken: csr};
+    $.ajax(
+    {
+        url: "{% url 'save' %}",
+        method: "POST",
+        data: mydata,
+        dataType: "json",
+        success: function(data)
+        {
+            console.log("success");
+            $("#stm").val("");
+            alert("Statement Saved");
+            $("#tagdiv").html("");
+        }
+
+    })
+});
+
+
+</script>

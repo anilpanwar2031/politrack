@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center alert alert-info">Politrack</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{% url 'statement' %}" method="post">
+                {% csrf_token %}
+                {{ fm.as_p }}
+                <div class="col-md-12 mb-2 mt-1" id="tagdiv"></div>
+                <input id="sub" type="button" value="Submit" class="btn btn-success">
+            </form>
+        </div>
+        <div class="col-md-6">
+            <canvas id="canvas" width="300" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<!--<script type="text/javascript">-->
+<!--    var ctx = document.getElementbyID(-->
+
+<!--</script>-->
+{% endblock content %}
